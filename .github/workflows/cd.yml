@@ -1,3 +1,5 @@
+name: Deploy
+
 on:
   push:
     branches: [main]
@@ -8,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
@@ -21,17 +23,16 @@ jobs:
         with:
           go-version: '1.22'
 
-      - name: set up cloud sdk
-        uses: 'google-github-actions/setup-gcloud@v2'
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
         with:
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-          export_default_credentials: true
+          project_id: notely-430415
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+      - name: Use gcloud CLI
+        run: gcloud info
 
-      - name: build app
+      - name: Build app
         run: ./scripts/buildprod.sh
 
-      - name: Submit docker
-        run: 'gcloud builds submit --tag us-central1-docker.pkg.dev/notely-430415/notely-ar-repo'
+      - name: Submit Docker image to Artifact Registry
+        run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-430415/notely-ar-repo
