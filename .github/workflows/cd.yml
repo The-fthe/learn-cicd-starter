@@ -18,3 +18,15 @@ jobs:
       - name: build app
         run: ./scripts/buildprod.sh
 
+      - name: set up cloud sdk
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          service_account_key: ${{ secret.GCP_CREDENTIALS }}
+          version: '>= 363.0.0'
+
+      - name: Submit docker
+        run: builds submit --tag us-central1-docker.pkg.dev/notely-430415/notely-ar-repo
+
+
+
+
