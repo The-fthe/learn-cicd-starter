@@ -53,6 +53,6 @@ jobs:
             gcloud run deploy notely --image us-central1-docker.pkg.dev/notely-430415/notely-ar-repo/notely:latest \
             --region us-central1 \
             --allow-unauthenticated \
-            --project=notely-430415 \
+            --project notely-430415 \
             --max-instances=4
 
